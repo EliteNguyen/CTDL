@@ -1,0 +1,116 @@
+#include<stdio.h>
+#include<string.h>
+typedef struct SinhVien
+{
+	char ma[11];
+	char ten[41];
+	double dTB;
+}SV;
+void Nhap(SV & sv)
+{
+	fflush(stdin);
+	printf("\nMa sinh vien= "); 
+	scanf("%s", &sv.ma);
+	printf("\nHo ten= "); //fflush(stdin); flushall();
+	gets(sv.ten); gets(sv.ten);
+	printf("\nDiem trung binh= "); 
+	scanf("%lf", &sv.dTB);
+}
+void Xuat(SV sv)
+{
+	printf("\nMa sinh vien= %s", sv.ma);
+	printf("\nHo ten= %s", sv.ten);
+	printf("\nDiem trung binh= %.2lf", sv.dTB);
+}
+struct Node
+{
+	SV info;
+	struct Node*next;
+};
+typedef Node* NODEPTR;
+void Init(NODEPTR &phead)
+{
+	phead = NULL;
+}
+NODEPTR CreateNode(SV x)
+{
+	NODEPTR p = new Node;
+	p->info = x;
+	p->next = NULL;
+	return p;
+}
+void InsertFirst(NODEPTR &phead, SV x)
+{
+	NODEPTR p = CreateNode(x);
+	p->next = phead;
+	phead = p;
+}
+void InputList(NODEPTR &phead)
+{
+	int n; 
+	SV x;
+	printf("\nMoi nhap so nut:");
+	scanf("\n%d",&n);
+	for (int i = 0; i < n; i++)
+	{
+		printf("\nMoi nhap sinh vien thu %d", i+1);
+		Nhap(x);
+		InsertFirst(phead,x);
+	}
+}
+void ShowList(NODEPTR phead)
+{
+	NODEPTR p=phead;
+	if(p==NULL)
+		printf("\nDanh sach bi rong");
+	while(p!=NULL)
+	{
+		Xuat(p->info);
+		p=p->next;
+	}
+}
+void XuatDTBHon5(NODEPTR phead)
+{
+	NODEPTR p = phead;	//int i = 0;
+	while (p != NULL)//while (i < n)
+	{
+		if(p->info.dTB>5)
+			Xuat(p->info);	//printf("%4d", a[i]);
+		p = p->next;	//i++;
+	}
+}
+NODEPTR TimMaSVX(NODEPTR phead, char x[])
+{
+	NODEPTR p = phead;	//int i = 0;
+	while (p != NULL)//while (i < n)
+	{
+		if (strcmp( p->info.ma,x)==0)
+			return p;	
+		p = p->next;	//i++;
+	}
+	return NULL;
+}
+int main()
+{
+	NODEPTR phead;	
+	Init(phead);
+	//Cau 1	
+	InputList(phead);
+	//Cau 2
+	printf("\nDanh sach sau khi nhap= ");	
+	ShowList(phead);
+	//Cau 3
+	printf("\nSinh vien co diem tb hon 5: ");
+	XuatDTBHon5(phead);
+	//Cau 4
+	char x[11];	
+	printf("\nNhap ma sinh vien can tim x= "); 
+	scanf("%s", &x);
+	NODEPTR p = TimMaSVX(phead, x);
+	if(p)	//if (p!=NULL)
+	{	printf("\nTim thay");
+		Xuat(p->info);
+	}
+	else	printf("\nKhong tim thay %s", x);
+	printf("\n");
+}

@@ -1,0 +1,101 @@
+
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#define MAX 100
+struct NHANVIEN
+{
+	char maNV[11];
+	char tenNV[41];
+	double luong;
+};
+void Nhap(NHANVIEN &nv)
+{
+	fflush(stdin);
+	printf("\nMoi nhap ma nhan vien: ");
+	gets(nv.maNV);
+	printf("\nMoi nhap ho ten nhan vien: ");
+	gets(nv.tenNV);
+	printf("\nMoi nhap luong nhan vien: ");
+	scanf("%lf", &nv.luong);
+}
+void Xuat(NHANVIEN nv)
+{
+	printf("\nMa nhan vien: %s", nv.maNV);
+	printf("\nHo ten nhan vien: %s", nv.tenNV);
+	printf("\nLuong nhan vien: %lf", nv.luong);
+}
+void Nhap(int &n)
+{
+	do
+	{
+		printf("\nMoi nhap (n>0) n: ");
+		scanf("%d", &n);
+		if(n <= 0)
+			printf("Ban nhap sai, moi nhap lai...");
+	} while (n <= 0);
+}
+void NhapMang(NHANVIEN a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		printf("\nMoi nhap nhan vien thu %d\n", i+1);
+		Nhap(a[i]);
+	}
+}
+void XuatMang(NHANVIEN a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		printf("\nNhan vien thu %d: ", i + 1);
+		Xuat(a[i]);
+	}
+}
+void Swap(NHANVIEN &x, NHANVIEN &y)
+{
+	NHANVIEN t = x; x = y; y = t;
+}
+void SelectionSort(NHANVIEN a[], int n)
+{
+	for (int i = 0; i < n - 1; i++)
+	{
+		int vtmin = i;
+		for (int j = i + 1; j < n; j++)
+		{
+			if (a[j].luong < a[vtmin].luong)
+			{
+				vtmin = j;
+			}
+			Swap(a[i], a[vtmin]);
+		}
+	}
+}
+void InsertionSort(NHANVIEN a[], int n)
+{
+	int pos;	
+	for (int i = 1; i < n; i++)
+	{
+		pos = i - 1;
+		NHANVIEN x = a[i];
+		while (pos >= 0 && a[pos].luong > x.luong)
+		{
+			a[pos+1] = a[pos];
+			pos--;	
+		}
+		a[pos + 1] = x;
+	}
+}
+int main()
+ 
+{
+	int n; 
+	Nhap(n);
+	NHANVIEN a[MAX];
+	NhapMang(a, n);
+	printf("\nMang sau khi nhap: ");
+	XuatMang(a, n);
+	SelectionSort(a, n);
+	printf("\nMang sau khi sap: ");
+	XuatMang(a, n);
+	printf("\n");
+}
