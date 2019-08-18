@@ -1,0 +1,110 @@
+#include<stdio.h>
+#include<conio.h>
+#define MAXSTACK 100
+typedef struct node
+{
+    int info;
+    struct node *next;
+}Node;
+typedef Node*NODE;
+typedef NODE Stack;
+Stack s;
+void Init(Stack &s)
+{
+    s=NULL;
+}
+int IsEmpty(Stack s)
+{
+    return(s==NULL);
+}
+void Push(Stack &s, int x)
+{
+    NODE p=new Node;
+    p->info=x;
+    p->next=s;
+    s=p;
+}
+int Pop(Stack &s)
+{
+    if(IsEmpty(s))
+        return 0;
+    NODE p=s;
+    int x=p->info;
+    s=s->next;
+    delete p;
+    return x;
+}
+void Nhap(int&n)
+{
+    do{
+        printf("\nMoi nhap n: ");
+        scanf("%d",&n);
+        if(n<=0)
+            printf("\nBan nhap sai moi nhap lai!!!");
+    }while(n<=0);
+}
+void Input(Stack &s)
+{
+    int n;Nhap(n);
+    for(int i=0;i<n;i++)
+    {
+        int x;
+        printf("\nMoi nhap phan tu thu %d: ",i+1);
+        scanf("%d",&x);
+        Push(s,x);
+    }
+}
+void Output(Stack s)
+{
+    if(!IsEmpty(s))
+    {
+        NODE p=s;
+        while(p!=NULL)
+        {
+            printf("%4d",p->info);
+            p=p->next;
+        }
+    }
+}
+int Menu()
+{
+    printf("\n===========MENU============");
+    printf("\n1: Input");
+    printf("\n2: Output");
+    printf("\n3: Push");
+    printf("\n4: Pop");
+    printf("\n5: Exit\n");
+    int chon;
+    scanf("%d",&chon);
+    return chon;
+}
+int main()
+{
+    Stack s;
+    Init(s);
+    int chon;
+    do{
+        chon=Menu();
+        switch(chon)
+        {
+            case 1: Input(s); break;
+            case 2: Output(s); break;
+            case 3: int k;
+                    printf("\nMoi nhap k:");
+                    scanf("%d",&k);
+                    Push(s,k);
+                    Output(s);
+                    break;
+            case 4: int x;
+					Pop(s);
+					Output(s);
+                    break;
+            case 5: chon=0;
+                    break;
+            default:
+                    printf("\nBan chon sai.....");
+                    break;
+        }
+    }while(chon!=0);
+    printf("\n");
+}

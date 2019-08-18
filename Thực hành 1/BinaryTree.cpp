@@ -1,0 +1,178 @@
+#include<stdio.h>
+#include<conio.h>
+//Khai bao cau truc cua cay nhi phan 
+typedef struct node
+{
+    int info;
+    struct node* left;
+    struct node* right;
+}Node;
+typedef Node* TREE;
+//Khoi dong cay nhi phan 
+void Init(TREE &t)
+{
+    t=NULL;
+}
+//Kiem tra cay nhi phan co rong hay 0
+int IsEmpty(TREE t)
+{
+    return(t==NULL);
+}
+//Cung cap 1 nut moi cho cay nhi phan
+Node* CreateNode(int x)
+{
+    Node* p=new Node;
+    p->info=x;
+    p->left=NULL;
+    p->right=NULL;
+    return p;
+}
+//Them mot nut vao cay nhi phan
+void Insert(TREE &t,int x)
+{
+    if(IsEmpty(t))
+        t=CreateNode(x);
+    else
+    {
+        if(x==t->info)
+            return;
+        if(x<t->info)
+            Insert(t->left,x);
+        else
+            Insert(t->right,x);
+    }
+}
+//Duyet cay nhi phan
+void Preoder(TREE t)
+{
+    if(t!=NULL)
+    {
+        printf("%4d",t->info);
+        Preoder(t->left);
+        Preoder(t->right);
+    }
+}
+//Cau 1
+TREE Search(TREE t,int x)
+{
+    TREE p;
+    p=t;
+    if(p!=NULL)
+    {
+        if(x<t->info)
+            p=Search(t->left,x);
+        else
+            if(x>t->info)
+                p=Search(t->right,x);
+        return p;
+    }
+}
+//Cau 2
+int DemNode(TREE t)
+{
+    if(IsEmpty(t))
+        return 0;
+    else
+        return (1+DemNode(t->left)+DemNode(t->right));
+}
+//Cau 3
+int DemLa(TREE t)
+{
+        if(IsEmpty(t))
+            return NULL;
+        if((t->left==NULL)&&(t->right==NULL))
+            return 1;
+        return DemLa(t->left) + DemLa(t->right);
+}
+//Cau 4
+int DemNhanh(TREE t)
+{
+    return((DemNode(t)-DemLa(t))-1);
+}
+//Cau 5
+int DemNodeChan(TREE t)
+{
+    if(!IsEmpty(t))
+    {
+        int a=DemNode(t->left);
+        int b=DemNode(t->right);
+        if(t->info%2==0)
+            return 1 + a + b;
+        return a + b;
+    }
+
+}
+//Cau 8
+int Max(int a,int b)
+{
+    if(a>=b)
+        return(a);
+    else
+        return(b);
+}
+//Chieu cao cua cay nhi phan 
+int Chieucao(TREE t)
+{
+    if(IsEmpty(t)||(t->left==NULL&&t->right==NULL))
+        return 0;
+    else
+        return (1+Max(Chieucao(t->left),Chieucao(t->right)));
+}
+//Nhap so nut cua cay nhi phan
+void Nhap(int&n)
+{
+    do{
+        printf("\nMoi nhap n: ");
+        scanf("%d",&n);
+        if(n<=0)
+            printf("\nBan nhap sai moi nhap lai!!!");
+    }while(n<=0);
+}
+//Nhap du lieu cho cay nhi phan 
+void CreateTree(TREE &t)
+{
+    int n;
+    Nhap(n);
+    for(int i=0;i<n;i++)
+    {
+        int x;
+        printf("\nMoi nhap Node thu %d: ",i+1);
+        scanf("%d",&x);
+        Insert(t,x);
+    }
+}
+//Chuong trinh chinh
+int main()
+{
+    int n;
+    TREE t;
+    Init(t);
+    CreateTree(t);
+    printf("\nCay sau khi duyet: ");
+    Preoder(t);
+    //Cau 1
+    int x;
+    printf("\nMoi nhap Node can tim:");scanf("%d",&x);
+    TREE kq=Search(t,x);
+    if(kq!=NULL)
+        printf("\nTim thay %d trong cay",kq->info);
+    else
+        printf("\nKhong tim thay %d trong cay",x);
+    //Cau 2
+    int dem=DemNode(t);
+    printf("\nSo Node co trong cay: %d",dem);
+    //Cau 3
+    int dl=DemLa(t);
+    printf("\nSo Node La co trong cay: %d",dl);
+    //Cau 4
+    int dn=DemNhanh(t);
+    printf("\nSo node trong cay: %d",dn);
+    //Cau 5
+    int chan=DemNodeChan(t);
+    printf("\nSo node chan trong cay: %d",chan);
+    //Cau 8
+    int h=Chieucao(t);
+    printf("\nChieu cao cua cay la: %d",h);
+}
+
+
